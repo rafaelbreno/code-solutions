@@ -10,9 +10,8 @@ filterMultiples = filter multipleOfFiveOrThree
 
 main :: IO ()
 main = do
-  {-- syntax sugar to create a list [1;1000] --}
-  let numbers = [1..1000]
+  {-- [1..999] is a sugar syntax to generate a list of item from 1 to 999 --}
+  let numbers = [1..999]
   let multiples = filterMultiples numbers
   let total = sum multiples
   putStrLn $ "Sum equal to " <> show total
-
