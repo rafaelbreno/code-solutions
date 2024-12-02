@@ -6,7 +6,7 @@ main = do
   result <- withFile "input.txt" ReadMode processFile 
   putStrLn $ "Result: " ++ show result
 
-processFile :: Handle -> IO Int 
+processFile :: Handle -> IO (Int, Int)
 processFile h = do 
   numbers <- readNumbers h ([],[])
   -- INFO: 
@@ -15,8 +15,9 @@ processFile h = do
   let (leftNumbers, rightNumbers) = numbers
       sortedNumbers = zip (sort leftNumbers) (sort rightNumbers)
       -- INFO: This is a beauty.
-      results = map (abs . uncurry(-)) sortedNumbers
-  return $ sum results
+      diffs = map (abs . uncurry(-)) sortedNumbers
+      sims = map (uncurry(*)) (processSimilarity leftNumbers rightNumbers)
+  return $ (sum diffs, sum sims)
 
 readNumbers :: Handle -> ([Int], [Int]) -> IO ([Int], [Int])
 readNumbers h acc = do 
@@ -35,6 +36,10 @@ readNumbers h acc = do
 
       appendLists :: ([Int], [Int]) -> Int -> Int -> ([Int], [Int])
       appendLists (leftNumbers, rightNumbers) n1 n2 = (n1:leftNumbers, n2:rightNumbers)
+
+processSimilarity :: [Int] -> [Int] -> [(Int, Int)]
+processSimilarity l1 l2 = 
+  [(x, length (filter (== x) l2)) | x <- l1]
 
 todo :: a 
 -- Todo implements a similar `todo!()` from Rust.
