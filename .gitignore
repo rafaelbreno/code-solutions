@@ -2,3 +2,6 @@
 **/*.hi
 **/*.o
 **/Main
+
+# input files
+**/*.txt
